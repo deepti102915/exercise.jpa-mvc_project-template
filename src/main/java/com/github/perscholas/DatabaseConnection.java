@@ -3,7 +3,10 @@ package com.github.perscholas;
 import com.github.perscholas.utils.ConnectionBuilder;
 import com.github.perscholas.utils.IOConsole;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * Created by leon on 2/18/2020.
@@ -23,9 +26,8 @@ public enum DatabaseConnection implements DatabaseConnectionInterface {
             .setDatabaseVendor("mariadb")
             .setHost("127.0.0.1"));
 
-    private static final IOConsole attemptConsole = new IOConsole(IOConsole.AnsiColor.CYAN);
-    private static final IOConsole successConsole = new IOConsole(IOConsole.AnsiColor.YELLOW);
-    private final ConnectionBuilder connectionBuilder;
+    private static final IOConsole successConsole = new IOConsole(IOConsole.AnsiColor.CYAN);
+    private volatile ConnectionBuilder connectionBuilder;
 
     DatabaseConnection(ConnectionBuilder connectionBuilder) {
         this.connectionBuilder = connectionBuilder;
@@ -51,14 +53,10 @@ public enum DatabaseConnection implements DatabaseConnectionInterface {
     @Override
     public void drop() {
         try {
-            String sqlStatement = "DROP DATABASE IF EXISTS " + name().toLowerCase() + ";";
-            String attemptMessage = "\nAttempting to execute statement\n\t`%s`";
-            attemptConsole.println(attemptMessage, sqlStatement);
-            getDatabaseEngineConnection()
-                    .prepareStatement(sqlStatement)
-                    .execute();
-            String successMessage = String.format("Successfully executed statement \n\t`%s`", sqlStatement);
-            successConsole.println(successMessage);
+            String sqlStatement = "DROP DATABASE IF EXISTS " + getDatabaseName() + ";";
+            String successMessage = String.format("Unsuccessfully executed statement \n\t`%s`", sqlStatement);
+            // TODO - Complete method implementation
+            throw new SQLException(new UnsupportedOperationException("Method not yet implemented"));
         } catch (SQLException e) {
             throw new Error(e);
         }
@@ -68,15 +66,11 @@ public enum DatabaseConnection implements DatabaseConnectionInterface {
     public void create() {
         String sqlStatement = "CREATE DATABASE IF NOT EXISTS " + name().toLowerCase() + ";";
         try {
-            String attemptMessage = "\nAttempting to execute statement\n\t`%s`";
-            attemptConsole.println(attemptMessage, sqlStatement);
-            getDatabaseEngineConnection()
-                    .prepareStatement(sqlStatement)
-                    .execute();
             String successMessage = String.format("Successfully executed statement \n\t`%s`", sqlStatement);
-            successConsole.println(successMessage);
+            // TODO - Complete method implementation
+            throw new SQLException(new UnsupportedOperationException("Method not yet implemented"));
         } catch (SQLException e) {
-            String errorMessage = String.format("Failed to connect to execute statement\n\t`%s`", sqlStatement);
+            String errorMessage = String.format("Failed to execute statement\n\t`%s`", sqlStatement);
             throw new Error(errorMessage, e);
         }
     }
@@ -85,13 +79,9 @@ public enum DatabaseConnection implements DatabaseConnectionInterface {
     public void use() {
         try {
             String sqlStatement = "USE " + name().toLowerCase() + ";";
-            String attemptMessage = "\nAttempting to execute statement\n\t`%s`";
-            attemptConsole.println(attemptMessage, sqlStatement);
-            getDatabaseEngineConnection()
-                    .prepareStatement(sqlStatement)
-                    .execute();
             String successMessage = String.format("Successfully executed statement \n\t`%s`", sqlStatement);
-            successConsole.println(successMessage);
+            // TODO - Complete method implementation
+            throw new SQLException(new UnsupportedOperationException("Method not yet implemented"));
         } catch (SQLException e) {
             throw new Error(e);
         }
@@ -101,11 +91,9 @@ public enum DatabaseConnection implements DatabaseConnectionInterface {
     public void executeStatement(String sqlStatement) {
         try {
             sqlStatement = sqlStatement.trim();
-            String attemptMessage = "\nAttempting to execute statement\n\t`%s`";
-            attemptConsole.println(attemptMessage, sqlStatement);
-            getScrollableStatement().execute(sqlStatement);
             String successMessage = String.format("Successfully executed statement \n\t`%s`", sqlStatement);
-            successConsole.println(successMessage);
+            // TODO - Complete method implementation
+            throw new SQLException(new UnsupportedOperationException("Method not yet implemented"));
         } catch (SQLException e) {
             String errorMessage = String.format("Failed to execute statement \n\t`%s`", sqlStatement);
             throw new Error(errorMessage, e);
@@ -115,16 +103,12 @@ public enum DatabaseConnection implements DatabaseConnectionInterface {
     @Override
     public ResultSet executeQuery(String sqlQuery) {
         try {
-            sqlQuery = sqlQuery.trim();
-            String attemptMessage = "\nAttempting to execute statement\n\t`%s`";
-            attemptConsole.println(attemptMessage, sqlQuery);
-            ResultSet result = getScrollableStatement().executeQuery(sqlQuery);
             String successMessage = String.format("Successfully executed query \n\t`%s`", sqlQuery);
-            successConsole.println(successMessage);
-            return result;
+            // TODO - Complete method implementation
+            throw new SQLException(new UnsupportedOperationException("Method not yet implemented"));
         } catch (SQLException e) {
             String errorMessage = String.format("Failed to execute query \n\t`%s`", sqlQuery);
-            throw new Error(errorMessage, e);
+            throw new RuntimeException(errorMessage, e);
         }
     }
 

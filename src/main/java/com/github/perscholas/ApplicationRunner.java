@@ -1,38 +1,41 @@
 package com.github.perscholas;
 
+import com.github.perscholas.controllers.ControllerInterface;
+import com.github.perscholas.controllers.PersonController;
+import com.github.perscholas.dao.PersonRepository;
+import com.github.perscholas.routers.ControllerRouter;
+import com.github.perscholas.service.PersonService;
 import com.github.perscholas.utils.IOConsole;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.StringJoiner;
+
 /**
  * Created by leon on 8/13/2020.
  */
 public class ApplicationRunner implements Runnable {
-    private IOConsole console = new IOConsole(IOConsole.AnsiColor.PURPLE);
+    private IOConsole console = new IOConsole(IOConsole.AnsiColor.GREEN);
 
     @Override
     public void run() {
-        DatabaseConnection dbConnection = DatabaseConnection.PRODUCTION_DATABASE;
-        ResultSet rs = dbConnection.executeQuery("SELECT * FROM production_database.person;");
-        printResults(rs);
-    }
+        Object personControllerObject = new PersonController(new PersonService(new PersonRepository()));
+        ControllerInterface personController = (ControllerInterface)personControllerObject;
 
-    private void printResults(ResultSet resultSet) {
-        try {
-            for (Integer rowNumber = 0; resultSet.next(); rowNumber++) {
-                String firstColumnData = resultSet.getString(1);
-                String secondColumnData = resultSet.getString(2);
-                String thirdColumnData = resultSet.getString(3);
-                console.println(new StringJoiner("\n")
-                        .add("\nRow number = " + rowNumber.toString())
-                        .add("First Column = " + firstColumnData)
-                        .add("Second Column = " + secondColumnData)
-                        .add("Third column = " + thirdColumnData)
-                        .toString());
+        String userInput;
+        do {
+            userInput = console.getStringInput(new StringJoiner("\n")
+                    .add("\n\nWelcome to the application request router.")
+                    .add("From here, you can select any of the following options:")
+                    .add(Arrays
+                            .toString(ControllerRouter.values())
+                            .replaceAll("_", "-")
+                            .toLowerCase())
+                    .toString());
+            try {
+                ControllerRouter.getValueOf(userInput).perform(personController);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        } while (!"quit".equalsIgnoreCase(userInput));
     }
 }

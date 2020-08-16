@@ -7,31 +7,44 @@ import org.mariadb.jdbc.Driver;
 import java.io.File;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by leon on 8/13/2020.
  */
 public class JdbcConfigurator {
-    static {
+    private final DatabaseConnectionInterface dbc;
+    private List<String> scriptFiles;
+
+    public JdbcConfigurator() {
+        this(DatabaseConnection.PRODUCTION_DATABASE);
+    }
+
+    public JdbcConfigurator(DatabaseConnectionInterface databaseConnection, String... scriptFiles) {
         // Attempt to register JDBC Driver
         try {
             DriverManager.registerDriver(Driver.class.newInstance());
+            this.scriptFiles = new ArrayList<>(Arrays.asList(scriptFiles));
+            this.dbc = databaseConnection;
         } catch (InstantiationException | IllegalAccessException | SQLException e1) {
             throw new Error(e1);
         }
     }
 
-    private static final DatabaseConnection dbc = DatabaseConnection.PRODUCTION_DATABASE;
-
-    public static void initialize() {
+    public void initialize() {
         dbc.drop();
         dbc.create();
         dbc.use();
-        executeSqlFile("person.create-table.sql");
-        executeSqlFile("person.populate-table.sql");
+        scriptFiles.forEach(this::executeSqlFile);
     }
 
-    private static void executeSqlFile(String fileName) {
+    public void appendSqlScript(String fileName) {
+        scriptFiles.add(fileName);
+    }
+
+    private void executeSqlFile(String fileName) {
         File creationStatementFile = DirectoryReference.RESOURCE_DIRECTORY.getFileFromDirectory(fileName);
         FileReader fileReader = new FileReader(creationStatementFile.getAbsolutePath());
         String[] statements = fileReader.toString().split(";");

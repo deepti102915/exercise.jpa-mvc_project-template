@@ -5,7 +5,6 @@ import com.github.perscholas.DatabaseConnectionInterface;
 import com.github.perscholas.model.EntityInterface;
 
 import java.io.Serializable;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -21,24 +20,18 @@ public interface RepositoryInterface<
         EntityType extends EntityInterface> {
     DatabaseConnectionInterface getDatabaseConnection();
 
+    EntityType create(EntityType entity);
+
     List<EntityType> findAll();
 
     EntityType update(EntityType existingEntity, EntityType newData);
 
-    ResultSet commit();
+    EntityType delete(EntityType entity);
 
-    default EntityType create(EntityType entity) {
-        findAll().add(entity);
-        return entity;
-    }
+    void commit();
 
     default EntityType delete(IdType id) {
         return delete(findById(id).get());
-    }
-
-    default EntityType delete(EntityType entity) {
-        findAll().remove(entity);
-        return entity;
     }
 
     default List<EntityType> findAllWhere(Predicate<EntityType> filterClause) {
@@ -52,17 +45,17 @@ public interface RepositoryInterface<
         return Optional.of(findAllWhere(entity -> entity.getId().equals(id)).get(0));
     }
 
-    default List<EntityType> updateWhere(Predicate<EntityType> filterClause, Function<EntityType, EntityType> updateFunction) {
-        return findAllWhere(filterClause)
-                .stream()
-                .map(updateFunction::apply)
-                .collect(Collectors.toList());
-    }
-
     default EntityType updateById(IdType id, EntityType newData) {
         return updateWhere(
                 entityToBeEvaluated -> entityToBeEvaluated.getId().equals(id),
                 matchedEntity -> update(matchedEntity, newData))
                 .get(0);
+    }
+
+    default List<EntityType> updateWhere(Predicate<EntityType> filterClause, Function<EntityType, EntityType> updateFunction) {
+        return findAllWhere(filterClause)
+                .stream()
+                .map(updateFunction::apply)
+                .collect(Collectors.toList());
     }
 }

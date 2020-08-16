@@ -9,5 +9,6 @@ import java.util.List;
  * Created by leon on 8/14/2020.
  */
 public interface DtoInterface<EntityType extends EntityInterface> {
-    List<EntityType> toList(ResultSet resultSet);
+    ResultSet getResultSet();
+    List<EntityType> toList();
 }

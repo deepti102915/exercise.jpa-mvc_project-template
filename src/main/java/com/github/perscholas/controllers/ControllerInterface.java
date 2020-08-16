@@ -8,4 +8,5 @@ public interface ControllerInterface<ServiceType extends ServiceInterface> {
     void displayAll();
     void delete();
     void update();
+    void create();
 }
