@@ -3,10 +3,8 @@ package com.github.perscholas.personservice;
 import com.github.perscholas.DatabaseConnection;
 import com.github.perscholas.JdbcConfigurator;
 import com.github.perscholas.dao.PersonRepository;
-import com.github.perscholas.dao.RepositoryInterface;
 import com.github.perscholas.model.Person;
 import com.github.perscholas.service.PersonService;
-import com.github.perscholas.service.ServiceInterface;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,10 +31,9 @@ public class FindAllTest {
     public void test() {
         // given
         PersonService personService = new PersonService(new PersonRepository(databaseConnection));
-        ServiceInterface serviceInterface =  (ServiceInterface)personService;
 
         // when
-        List<Person> personList = serviceInterface.findAll();
+        List<Person> personList = personService.findAll();
 
         // then
         Assert.assertFalse(personList.isEmpty());

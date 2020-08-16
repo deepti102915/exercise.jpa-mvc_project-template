@@ -2,7 +2,6 @@ package com.github.perscholas.personcontroller;
 
 import com.github.perscholas.DatabaseConnection;
 import com.github.perscholas.JdbcConfigurator;
-import com.github.perscholas.controllers.ControllerInterface;
 import com.github.perscholas.controllers.PersonController;
 import com.github.perscholas.dao.PersonRepository;
 import com.github.perscholas.service.PersonService;
@@ -29,10 +28,9 @@ public class DisplayAllTest {
     public void test() {
         // given
         PersonController personController = new PersonController(new PersonService(new PersonRepository(databaseConnection)));
-        ControllerInterface controllerInterface = (ControllerInterface)personController;
 
         // when
-        controllerInterface.displayAll();
+        personController.displayAll();
 
         // then
 

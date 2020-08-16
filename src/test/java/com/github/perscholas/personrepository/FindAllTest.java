@@ -3,7 +3,6 @@ package com.github.perscholas.personrepository;
 import com.github.perscholas.DatabaseConnection;
 import com.github.perscholas.JdbcConfigurator;
 import com.github.perscholas.dao.PersonRepository;
-import com.github.perscholas.dao.RepositoryInterface;
 import com.github.perscholas.model.Person;
 import org.junit.Assert;
 import org.junit.Before;
@@ -30,11 +29,10 @@ public class FindAllTest {
     @Test
     public void test() {
         // given
-        PersonRepository personRepository = new PersonRepository(databaseConnection);
-        RepositoryInterface repositoryInterface = (RepositoryInterface)personRepository;
+        PersonRepository repository = new PersonRepository(databaseConnection);
 
         // when
-        List<Person> personList = repositoryInterface.findAll();
+        List<Person> personList = repository.findAll();
 
         // then
         Assert.assertFalse(personList.isEmpty());
