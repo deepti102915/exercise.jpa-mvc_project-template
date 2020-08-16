@@ -58,7 +58,7 @@ public enum DatabaseConnection implements DatabaseConnectionInterface {
             // TODO - Complete method implementation
             throw new SQLException(new UnsupportedOperationException("Method not yet implemented"));
         } catch (SQLException e) {
-            throw new Error(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -71,7 +71,7 @@ public enum DatabaseConnection implements DatabaseConnectionInterface {
             throw new SQLException(new UnsupportedOperationException("Method not yet implemented"));
         } catch (SQLException e) {
             String errorMessage = String.format("Failed to execute statement\n\t`%s`", sqlStatement);
-            throw new Error(errorMessage, e);
+            throw new RuntimeException(errorMessage, e);
         }
     }
 
@@ -83,7 +83,7 @@ public enum DatabaseConnection implements DatabaseConnectionInterface {
             // TODO - Complete method implementation
             throw new SQLException(new UnsupportedOperationException("Method not yet implemented"));
         } catch (SQLException e) {
-            throw new Error(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -96,7 +96,7 @@ public enum DatabaseConnection implements DatabaseConnectionInterface {
             throw new SQLException(new UnsupportedOperationException("Method not yet implemented"));
         } catch (SQLException e) {
             String errorMessage = String.format("Failed to execute statement \n\t`%s`", sqlStatement);
-            throw new Error(errorMessage, e);
+            throw new RuntimeException(errorMessage, e);
         }
     }
 
@@ -118,7 +118,7 @@ public enum DatabaseConnection implements DatabaseConnectionInterface {
         try {
             return getDatabaseConnection().createStatement(resultSetType, resultSetConcurrency);
         } catch (SQLException e) {
-            throw new Error(e);
+            throw new RuntimeException(e);
         }
     }
 }
