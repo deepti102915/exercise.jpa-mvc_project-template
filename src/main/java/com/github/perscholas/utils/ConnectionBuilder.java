@@ -3,8 +3,6 @@ package com.github.perscholas.utils;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Created by leon on 3/13/18.
@@ -17,6 +15,18 @@ public class ConnectionBuilder {
     private String databaseVendor;
     private String hostName;
     private String databaseName;
+
+    public ConnectionBuilder() {
+    }
+
+    public ConnectionBuilder(ConnectionBuilder connectionBuilder) {
+        this.portNumber = connectionBuilder.portNumber;
+        this.userName = connectionBuilder.userName;
+        this.userPass = connectionBuilder.userPass;
+        this.databaseVendor = connectionBuilder.databaseVendor;
+        this.hostName = connectionBuilder.hostName;
+        this.databaseName = connectionBuilder.databaseName;
+    }
 
     public ConnectionBuilder setPort(Integer portNumber) {
         this.portNumber = portNumber;

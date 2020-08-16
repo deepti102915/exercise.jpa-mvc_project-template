@@ -40,7 +40,7 @@ public enum DatabaseConnection implements DatabaseConnectionInterface {
 
     @Override
     public Connection getDatabaseConnection() {
-        return connectionBuilder
+        return new ConnectionBuilder(connectionBuilder)
                 .setDatabaseName(name().toLowerCase())
                 .build();
     }
