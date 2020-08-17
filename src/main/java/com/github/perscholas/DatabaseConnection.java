@@ -26,7 +26,7 @@ public enum DatabaseConnection implements DatabaseConnectionInterface {
             .setDatabaseVendor("mariadb")
             .setHost("127.0.0.1"));
 
-    private static final IOConsole successConsole = new IOConsole(IOConsole.AnsiColor.CYAN);
+    private static final IOConsole console = new IOConsole(IOConsole.AnsiColor.CYAN);
     private volatile ConnectionBuilder connectionBuilder;
 
     DatabaseConnection(ConnectionBuilder connectionBuilder) {
